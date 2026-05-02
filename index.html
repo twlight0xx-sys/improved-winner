@@ -1,51 +1,2059 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twlightx0 Project</title>
-
-    <!-- 1. CSS LINKS: Tell the browser where your 5 style files are -->
-    <link rel="stylesheet" href="css/template1.css">
-    <link rel="stylesheet" href="css/template2.css">
-    <link rel="stylesheet" href="css/template3.css">
-    <link rel="stylesheet" href="css/template4.css">
-    <link rel="stylesheet" href="css/template5.css">
+    <title>My Project</title>
+    <!-- Put all your CSS files here -->
+    <link rel="stylesheet" href="css/1.css">
+    <link rel="stylesheet" href="css/2.css">
+    <link rel="stylesheet" href="css/3.css">
+    <link rel="stylesheet" href="css/4.css">
+    <link rel="stylesheet" href="css/5.css">
 </head>
 <body>
 
-    <!-- SECTION 1: Your Sidebar UI -->
-    <div id="section-one">
-        <!-- PASTE THE HTML FROM TEMPLATE 1 HERE -->
+    <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGS Files | TheMaker777</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --theme-rgb: 74, 222, 128; }
+        [data-theme="amber"] { --theme-rgb: 251, 191, 36; }
+        [data-theme="pink"]  { --theme-rgb: 244, 114, 182; }
+        [data-theme="blue"]  { --theme-rgb: 96, 165, 250; }
+
+        .theme-text        { color: rgb(var(--theme-rgb)) !important; }
+        .theme-border      { border-color: rgb(var(--theme-rgb)) !important; }
+        .theme-border-dark { border-color: rgba(var(--theme-rgb), 0.3) !important; }
+        .theme-bg:hover    { background-color: rgb(var(--theme-rgb)) !important; color: #000 !important; }
+        .theme-bg-solid    { background-color: rgb(var(--theme-rgb)) !important; color: #000 !important; font-weight: bold; }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        body {
+            background-color: #050505;
+            color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        .sidebar {
+            position: fixed; left: 0; top: 0;
+            width: 80px; height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            border-right: 1px solid #333;
+            padding: 20px 10px;
+            display: flex; flex-direction: column; gap: 8px;
+            overflow-y: auto; z-index: 1000;
+        }
+        .main-content {
+            margin-left: 80px; flex: 1; padding: 2rem;
+            z-index: 10; min-height: 100vh;
+            width: calc(100% - 80px); pointer-events: none;
+        }
+        .interactive-area { pointer-events: auto; }
+
+        #sections-container {
+            background: rgba(15, 15, 15, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid #333; border-radius: 4px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .letter-section { margin-bottom: 40px; }
+        .letter-header {
+            color: rgb(var(--theme-rgb)); font-size: 24px; font-weight: bold;
+            margin-bottom: 20px; padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(var(--theme-rgb), 0.3);
+            text-transform: uppercase;
+        }
+
+        .game-wrapper {
+            position: relative; display: flex; align-items: center;
+            width: 100%; margin-bottom: 6px;
+        }
+
+        input[type="button"] {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #222; padding: 14px 20px;
+            font-size: 13px; font-family: 'Space Mono', monospace;
+            cursor: pointer; color: #ccc; text-align: left;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%; max-width: 100%;
+            margin-bottom: 0 !important; padding-right: 40px !important; display: block;
+        }
+        input[type="button"]:hover {
+            background: rgb(var(--theme-rgb)); color: #000;
+            border-color: rgb(var(--theme-rgb)); padding-left: 30px; font-weight: bold;
+        }
+
+        .fav-star {
+            position: absolute; right: 12px; font-size: 18px; color: #444;
+            cursor: pointer; background: none; border: none; padding: 0; outline: none;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .fav-star:hover { color: #fbbf24; transform: scale(1.1); }
+        .fav-star.active { color: #fbbf24; }
+
+        #startup-screen {
+            position: fixed; inset: 0; z-index: 99999;
+            background: #050505; color: rgb(var(--theme-rgb));
+            font-family: 'Space Mono', monospace;
+            display: none; flex-direction: column; justify-content: center; padding: 2rem;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Unified modal base — JS toggles display between none / flex */
+        .ugs-modal {
+            display: none; position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);
+            align-items: center; justify-content: center;
+        }
+        #auth-modal, #confirm-modal { z-index: 99999; background: rgba(0,0,0,0.90); backdrop-filter: blur(8px); }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 60px; }
+            .main-content { margin-left: 60px; width: calc(100% - 60px); padding: 1rem; }
+            .letter-header { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STARTUP SCREEN -->
+    <div id="startup-screen">
+        <div id="startup-text" class="max-w-3xl mx-auto text-lg md:text-2xl font-bold"></div>
     </div>
 
-    <!-- SECTION 2: Your Typing Game -->
-    <div id="section-two">
-        <!-- PASTE THE HTML FROM TEMPLATE 2 HERE -->
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="ugs-modal">
+        <div class="bg-[#0f0f0f] border theme-border p-6 rounded shadow-2xl max-w-md w-full mx-4">
+            <h2 class="theme-text text-xl font-bold mb-6 pb-2 border-b theme-border-dark uppercase">SETTINGS //</h2>
+            <div class="space-y-4 font-mono text-sm">
+                <div class="flex items-center justify-between">
+                    <label class="text-gray-300">STARTUP_ANIMATION</label>
+                    <input type="checkbox" id="set-startup" class="accent-emerald-500 w-4 h-4">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-gray-300">PANIC_BUTTON (ESC / ~)</label>
+                        <input type="checkbox" id="set-panic" class="accent-emerald-500 w-4 h-4">
+                    </div>
+                    <input type="text" id="set-panic-url" placeholder="https://nebo.instructure.com/"
+                        class="w-full bg-black/50 border border-gray-700 text-gray-300 px-3 py-1 text-xs focus:outline-none focus:theme-border">
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-gray-800">
+                    <label class="text-gray-300">SYSTEM_THEME</label>
+                    <select id="set-theme" class="bg-black/50 border border-gray-700 theme-text px-2 py-1 text-xs focus:outline-none">
+                        <option value="green">Hacker Green</option>
+                        <option value="amber">Terminal Amber</option>
+                        <option value="pink">Cyberpunk Pink</option>
+                        <option value="blue">Ice Blue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-8 flex justify-between items-center">
+                <button onclick="toggleAdmin(); toggleModal('settings-modal');"
+                    class="text-[10px] text-gray-600 hover:text-white transition-colors underline decoration-dashed underline-offset-4 tracking-widest">ACCESS_DB()</button>
+                <div class="flex gap-3">
+                    <button onclick="toggleModal('settings-modal')"
+                        class="text-xs border border-gray-700 text-gray-400 px-4 py-2 hover:bg-white hover:text-black transition-all">CANCEL</button>
+                    <button onclick="saveSettings()"
+                        class="text-xs border theme-border theme-text px-4 py-2 theme-bg transition-all font-bold">SAVE_CHANGES</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- SECTION 3: The Next Part -->
-    <div id="section-three">
-        <!-- PASTE THE HTML FROM TEMPLATE 3 HERE -->
+    <!-- CHANGELOG MODAL -->
+    <div id="changelog-modal" class="ugs-modal">
+        <div class="bg-[#0f0f0f] border theme-border p-6 rounded shadow-2xl max-w-lg w-full mx-4">
+            <h2 class="theme-text text-xl font-bold mb-4 pb-2 border-b theme-border-dark uppercase flex justify-between items-center">
+                <span>UPDATE_LOGS //</span>
+                <span class="text-gray-600 text-[10px]">READ_ONLY</span>
+            </h2>
+            <div class="space-y-3 text-sm text-gray-400 font-mono max-h-64 overflow-y-auto pr-2">
+                <div><span class="theme-text">[CURRENT]</span> <span class="text-white">v1.4:</span> Updated newly added files list. Moved system logs to modal window. Added Boxel Rebound!</div>
+                <div><span class="text-emerald-400">[ARCHIVE]</span> <span class="text-white">v1.3:</span> Optimized Logic (DRY), Cached Canvas Renderer, Startup Anim, Panic Button, Theme Engine, &amp; Favorites.</div>
+                <div><span class="text-emerald-400">[ARCHIVE]</span> <span class="text-white">v1.2:</span> Added Stealth Cloaker, Tagging system, and System Changelog.</div>
+                <div><span class="text-emerald-400">[ARCHIVE]</span> <span class="text-white">v1.1:</span> Implemented live search filtering and dynamic button injection.</div>
+            </div>
+            <div class="mt-8 flex justify-end">
+                <button onclick="toggleModal('changelog-modal')"
+                    class="text-xs border theme-border theme-text px-4 py-2 theme-bg transition-all font-bold">CLOSE</button>
+            </div>
+        </div>
     </div>
 
-    <!-- SECTION 4: Another Feature -->
-    <div id="section-four">
-        <!-- PASTE THE HTML FROM TEMPLATE 4 HERE -->
+    <!-- FEEDBACK MODAL -->
+    <div id="feedback-modal" class="ugs-modal">
+        <div class="bg-[#0f0f0f] border theme-border p-6 rounded shadow-2xl max-w-2xl w-full mx-4 h-[80vh] flex flex-col">
+            <h2 class="theme-text text-xl font-bold mb-4 pb-2 border-b theme-border-dark uppercase">FEEDBACK //</h2>
+            <div class="flex-1 w-full bg-[#f0f4f9] rounded overflow-hidden relative">
+                <iframe src="https://docs.google.com/forms/d/1xSxc3S9g_ZFSQ31SL1hHrp0dRd4SMM69zF8cT8mFqI0/viewform?embedded=true"
+                    class="absolute inset-0 w-full h-full border-none" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+            </div>
+            <div class="mt-4 flex justify-end gap-3">
+                <button onclick="toggleModal('feedback-modal')"
+                    class="text-xs border theme-border theme-text px-4 py-2 theme-bg transition-all font-bold">CLOSE</button>
+            </div>
+        </div>
     </div>
 
-    <!-- SECTION 5: The Last Piece -->
-    <div id="section-five">
-        <!-- PASTE THE HTML FROM TEMPLATE 5 HERE -->
+    <!-- DATABASE MODAL (Admin View) -->
+    <div id="admin-modal" class="ugs-modal">
+        <div class="bg-[#0f0f0f] border theme-border p-6 rounded shadow-2xl max-w-4xl w-full mx-4 h-[85vh] flex flex-col">
+            <h2 class="theme-text text-xl font-bold mb-4 pb-2 border-b theme-border-dark uppercase flex justify-between items-center">
+                <span>DATABASE_ACCESS //</span>
+                <span class="text-emerald-500 text-[10px]">CONNECTED_SECURELY</span>
+            </h2>
+            <div class="flex-1 w-full bg-[#f0f4f9] rounded overflow-hidden relative">
+                <iframe src="https://docs.google.com/forms/d/1xSxc3S9g_ZFSQ31SL1hHrp0dRd4SMM69zF8cT8mFqI0/edit#responses"
+                    class="absolute inset-0 w-full h-full border-none" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+            </div>
+            <div class="mt-4 flex justify-end gap-3">
+                <button onclick="window.open('https://docs.google.com/forms/d/1xSxc3S9g_ZFSQ31SL1hHrp0dRd4SMM69zF8cT8mFqI0/edit#responses','_blank')"
+                    class="text-xs border border-gray-700 text-gray-400 px-4 py-2 hover:bg-white hover:text-black transition-all font-bold">OPEN_IN_NEW_TAB</button>
+                <button onclick="toggleModal('admin-modal')"
+                    class="text-xs border theme-border theme-text px-4 py-2 theme-bg transition-all font-bold">CLOSE_CONNECTION</button>
+            </div>
+        </div>
     </div>
 
+    <!-- AUTH MODAL -->
+    <div id="auth-modal" class="ugs-modal">
+        <div class="bg-[#0f0f0f] border border-red-900 p-6 rounded shadow-2xl max-w-sm w-full mx-4">
+            <h2 class="text-red-500 text-xl font-bold mb-4 pb-2 border-b border-red-900 uppercase">AUTH_REQUIRED //</h2>
+            <div class="space-y-4 font-mono text-sm">
+                <div class="flex flex-col gap-1">
+                    <label class="text-gray-400 text-xs">ENTER_PASSCODE</label>
+                    <input type="password" id="auth-passcode"
+                        class="w-full bg-black/50 border border-red-900 text-red-200 px-3 py-2 focus:outline-none focus:border-red-500 text-center tracking-[0.5em]"
+                        onkeypress="if(event.key==='Enter') submitAuth()">
+                </div>
+                <div id="auth-error" class="text-xs font-bold text-center h-4 text-red-500"></div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button onclick="toggleModal('auth-modal')"
+                    class="text-xs border border-gray-700 text-gray-400 px-4 py-2 hover:bg-white hover:text-black transition-all">CANCEL</button>
+                <button onclick="submitAuth()"
+                    class="text-xs border border-red-900 text-red-500 px-4 py-2 hover:bg-red-900 hover:text-white transition-all font-bold">DECRYPT</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- 2. JS SCRIPTS: Put these at the bottom so the page loads faster -->
-    <script src="js/template1.js"></script>
-    <script src="js/template2.js"></script>
-    <script src="js/template3.js"></script>
-    <script src="js/template4.js"></script>
-    <script src="js/template5.js"></script>
+    <!-- CONFIRM MODAL -->
+    <div id="confirm-modal" class="ugs-modal">
+        <div class="bg-[#0f0f0f] border border-yellow-900 p-6 rounded shadow-2xl max-w-sm w-full mx-4">
+            <h2 class="text-yellow-500 text-xl font-bold mb-4 pb-2 border-b border-yellow-900 uppercase">WARNING //</h2>
+            <p id="confirm-message" class="text-gray-300 font-mono text-sm mb-6"></p>
+            <div class="flex justify-end gap-3">
+                <button onclick="closeConfirm(false)"
+                    class="text-xs border border-gray-700 text-gray-400 px-4 py-2 hover:bg-white hover:text-black transition-all font-mono">ABORT</button>
+                <button onclick="closeConfirm(true)"
+                    class="text-xs border border-yellow-900 text-yellow-500 px-4 py-2 hover:bg-yellow-900 hover:text-black transition-all font-bold font-mono">PROCEED</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP RIGHT BUTTONS -->
+    <div class="fixed top-4 right-4 z-[9000] flex gap-2 interactive-area">
+        <button onclick="toggleModal('feedback-modal')" class="text-xs font-bold font-mono border theme-border theme-text bg-[#0a0a0a]/90 px-4 py-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] backdrop-blur-md theme-bg transition-all tracking-wider relative">
+            [ FEEDBACK ]
+        </button>
+        <button onclick="toggleModal('changelog-modal')" class="text-xs font-bold font-mono border theme-border theme-text bg-[#0a0a0a]/90 px-4 py-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] backdrop-blur-md theme-bg transition-all tracking-wider">[ UPDATE_LOGS ]</button>
+        <button onclick="toggleModal('settings-modal')" class="text-xs font-bold font-mono border theme-border theme-text bg-[#0a0a0a]/90 px-4 py-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] backdrop-blur-md theme-bg transition-all tracking-wider">[ SETTINGS ]</button>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="sidebar interactive-area" id="sidebar"></div>
+
+    <div class="main-content pt-20">
+        <div class="max-w-5xl mx-auto">
+            <div class="interactive-area text-left">
+                <div class="flex flex-col md:flex-row md:items-end gap-4 mb-6">
+                    <div>
+                        <h1 class="text-4xl md:text-6xl font-black tracking-tighter">UGS_FILES</h1>
+                        <p class="theme-text text-xs tracking-[0.3em] font-bold uppercase mt-2">Archive_Access_Authorized</p>
+                    </div>
+                </div>
+                <div class="mb-10 text-sm text-gray-500 space-y-3 border-l-2 theme-border-dark pl-6">
+                    <p>SYSTEM: <span class="text-gray-300">Ultimate Game Stash Core</span></p>
+                    <p>STATUS: <span class="theme-text">Online</span></p>
+                    <p>SRC_LINK: <a href="https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/" target="_blank" class="text-white hover:theme-text transition-colors">[ Google Docs ]</a></p>
+                    <div class="pt-4 flex flex-wrap gap-2">
+                        <button id="force-load" onclick="loadDatabase()" class="text-[10px] border border-gray-700 px-4 py-2 hover:bg-white hover:text-black transition-all font-bold">RELOAD_FILES()</button>
+                        <button id="random-game" onclick="playRandomGame()" class="text-[10px] border theme-border theme-text px-4 py-2 theme-bg transition-all font-bold">LAUNCH_RANDOM_GAME()</button>
+                    </div>
+                    <div class="pt-4 w-full max-w-md">
+                        <input type="text" id="search-input" oninput="filterGames()" placeholder="SEARCH_FILES()..."
+                            class="w-full bg-transparent border border-gray-800 theme-text px-4 py-2 text-[11px] focus:outline-none focus:theme-border focus:bg-black/40 placeholder-gray-600 transition-all font-mono">
+                    </div>
+                </div>
+
+                <!-- FAVORITES SECTION -->
+                <div id="favorites-section" class="mb-8 border border-yellow-900/50 bg-[#0a0a0a]/80 backdrop-blur-sm p-4 rounded shadow-lg max-w-3xl hidden">
+                    <h3 class="text-yellow-500 font-bold mb-3 border-b border-yellow-900/50 pb-2 text-sm uppercase flex justify-between">
+                        <span>STARRED_FILES //</span>
+                        <span class="text-gray-600 text-[10px]">LOCAL_STORAGE</span>
+                    </h3>
+                    <div id="favorites-container" class="mt-4"></div>
+                </div>
+
+                <!-- HIDDEN SOURCE (custom / hardcoded games) -->
+                <div id="custom-games-source" style="display:none;">
+                    <!-- DRIVE MAD -->
+                    <template id="drive-mad-src">
+                        <html lang="en-us"><base href="https://cdn.jsdelivr.net/gh/genizy/dmad-poki@49b5ab6b987f5f3be58f9dae59c92e8fc1aab9b0/"><script>window.assgdd={ancestorOrigins:{0:"https://games.poki.com",1:"https://poki.com"},href:"https://f9564e4e-ef25-4e4b-ba67-cb11a1576bbd.poki-gdn.com/cc1bc57a-e355-4696-97c2-097bf6188606/index.html?country=US&url_referrer=https%3A%2F%2Fpoki.com%2F&site_id=3&iso_lang=en&poki_url=https%3A%2F%2Fpoki.com%2Fen%2Fg%2Fdrive-mad&hoist=yes&nonPersonalized=n&cloudsavegames=n&familyFriendly=n&categories=78%2C93%2C96%2C103%2C377%2C390%2C400%2C893%2C929%2C1126%2C1139%2C1140%2C1141%2C1143%2C1147%2C1163%2C1185%2C1190%2C1193%2C1197&special_condition=landing&game_id=f9564e4e-ef25-4e4b-ba67-cb11a1576bbd&game_version_id=cc1bc57a-e355-4696-97c2-097bf6188606&inspector=0",origin:"https://f9564e4e-ef25-4e4b-ba67-cb11a1576bbd.poki-gdn.com",protocol:"https:",host:"f9564e4e-ef25-4e4b-ba67-cb11a1576bbd.poki-gdn.com",hostname:"f9564e4e-ef25-4e4b-ba67-cb11a1576bbd.poki-gdn.com",port:"",pathname:"/cc1bc57a-e355-4696-97c2-097bf6188606/index.html",search:"?country=US&url_referrer=https%3A%2F%2Fpoki.com%2F&site_id=3&iso_lang=en&poki_url=https%3A%2F%2Fpoki.com%2Fen%2Fg%2Fdrive-mad&hoist=yes&nonPersonalized=n&cloudsavegames=n&familyFriendly=n&categories=78%2C93%2C96%2C103%2C377%2C390%2C400%2C893%2C929%2C1126%2C1139%2C1140%2C1141%2C1143%2C1147%2C1163%2C1185%2C1190%2C1193%2C1197&special_condition=landing&game_id=f9564e4e-ef25-4e4b-ba67-cb11a1576bbd&game_version_id=cc1bc57a-e355-4696-97c2-097bf6188606&inspector=0",hash:""}</script><meta charset="utf-8"><meta content="text/html; charset=utf-8"http-equiv="Content-Type"><title>Drive Mad</title><meta content=""name="description"><meta content="notranslate"name="google"><meta content="width=device-width,initial-scale=1,user-scalable=no"name="viewport"><link href="webapp/fancade.css"rel="stylesheet"><link href="webapp/favicon.ico"rel="icon"><script src="poki-sdk.js"></script><body id="body"><div id="modal_parent"><div id="modal_content"><span id="modal_close_button">×</span><div id="store_link_modal_content"class="modal_inner"></div><div id="share_file_modal_content"class="modal_inner"></div></div></div><div id="canvas_border"class="emscripten_border"><div id="play_content"class="center middle"><div class="edge"><div class="box"><div class="black"><img class="cover"src="webapp/cover.jpg"><p class="title">Drive Mad<p class="author">Fancade</div></div></div><div id="progress_or_play"><progress class="loading"id="progress"max="100"value="0"></progress></div><p class="description"></div><canvas class="emscripten"id="canvas"tabindex="-1"></canvas><div id="gradient"></div><div id="webview_content"></div></div><script src="webapp/source_min.js"></script><script src="webapp/index.js"></script></html>
+                    </template>
+                    <input type="button" data-new="true" value="Drive Mad" onclick="launchCloaked(document.getElementById('drive-mad-src').innerHTML, true)">
+
+                    <!-- CREEPER WORLD -->
+                    <template id="creeper-world-src">
+                        <!DOCTYPE html><html><head><meta charset="UTF-8"><title>Creeper World</title><style>body,html{margin:0;padding:0;width:100%;height:100%;background:#000;overflow:hidden;}#ruffle-container{width:100vw;height:100vh;}</style></head><body><div id="ruffle-container"></div><script src="https://cdn.jsdelivr.net/gh/somer-sheff-73/xv@main/ruffle.js"></script><script>window.addEventListener("load",()=>{const ruffle=window.RufflePlayer.newest();const player=ruffle.createPlayer();const container=document.getElementById("ruffle-container");container.appendChild(player);player.style.width="100%";player.style.height="100%";player.load({url:"https://cdn.jsdelivr.net/gh/TheMaker777/UGS_FIILES@main/creeper-world-evermo-12592.swf",base:"https://armorgames.com/",allowScriptAccess:true});});</script></body></html>
+                    </template>
+                    <input type="button" data-new="true" value="Creeper World" onclick="launchCloaked(document.getElementById('creeper-world-src').innerHTML, true)">
+
+                    <!-- FIVE NIGHTS AT BIG E -->
+                    <template id="fnae-src">
+                        <html lang="en-us"><head><base href="https://cdn.jsdelivr.net/gh/web-ports/fnae@afd4e5071add297d6169665a4f999d62f312532e/"><meta charset="utf-8"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Unity Web Player | Five Night's at BIG E</title><link rel="shortcut icon" href="TemplateData/favicon.ico"><link rel="stylesheet" href="TemplateData/style.css"></head><body style="margin:0;padding:0;background:#000;overflow:hidden;"><div id="loading-text" style="color:white;font-size:48px;font-family:cursive;text-align:center;margin-top:20px;">LOADING...</div><div id="unity-container" style="width:100vw;height:100vh;"><canvas id="unity-canvas" style="width:100%;height:100%;" tabindex="-1"></canvas><div id="unity-loading-bar"><div id="unity-logo"></div><div id="unity-progress-bar-empty"><div id="unity-progress-bar-full"></div></div></div></div><script>var loadingText=document.querySelector("#loading-text");let loadedBytes=0;async function fetchWithProgress(url){const response=await fetch(url);const reader=response.body.getReader();let chunks=[],received=0;while(true){const{done,value}=await reader.read();if(done)break;received+=value.length;loadedBytes+=value.length;chunks.push(value);let mbDone=(loadedBytes/(1024*1024)).toFixed(2);loadingText.textContent=`LOADING... ${mbDone} MB / 139.53 MB`;}let fullBuffer=new Uint8Array(received);let offset=0;for(let chunk of chunks){fullBuffer.set(chunk,offset);offset+=chunk.length;}return fullBuffer.buffer;}async function mergeFiles(fileParts){const buffers=await Promise.all(fileParts.map(part=>fetchWithProgress(part)));const mergedBlob=new Blob(buffers);return URL.createObjectURL(mergedBlob);}function getParts(file,start,end){let parts=[];for(let i=start;i<=end;i++)parts.push(file+".part"+i);return parts;}(async()=>{const[dataUrl,wasmUrl,webm]=await Promise.all([mergeFiles(getParts("Build/fnae.data",1,3)),mergeFiles(getParts("Build/fnae.wasm",1,2)),mergeFiles(getParts("StreamingAssets/202512191935.webm",1,3))]);window.randomwebm=webm;const realSrc=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,"src");Object.defineProperty(HTMLMediaElement.prototype,"src",{set(value){if(typeof value==="string"&&value.includes("202512191935.mp4"))value=window.randomwebm;return realSrc.set.call(this,value);},get(){return realSrc.get.call(this);}});var canvas=document.querySelector("#unity-canvas");var loadingBar=document.querySelector("#unity-loading-bar");var progressBarFull=document.querySelector("#unity-progress-bar-full");var buildUrl="Build";var loaderUrl=buildUrl+"/fnae.loader.js";var config={arguments:[],dataUrl:dataUrl,frameworkUrl:buildUrl+"/fnae.framework.js",codeUrl:wasmUrl,streamingAssetsUrl:"StreamingAssets",companyName:"DefaultCompany",productName:"fnae",productVersion:"1.0",showBanner:()=>{}};if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)){var meta=document.createElement("meta");meta.name="viewport";meta.content="width=device-width,height=device-height,initial-scale=1.0,user-scalable=no,shrink-to-fit=yes";document.getElementsByTagName("head")[0].appendChild(meta);}loadingBar.style.display="block";var script=document.createElement("script");script.src=loaderUrl;script.onload=()=>{createUnityInstance(canvas,config,(progress)=>{progressBarFull.style.width=100*progress+"%";}).then((unityInstance)=>{loadingBar.style.display="none";document.getElementById("loading-text").remove();}).catch((message)=>{alert(message);});};document.body.appendChild(script);})();</script></body></html>
+                    </template>
+                    <input type="button" data-new="true" value="Five Nights At BIG E" onclick="launchCloaked(document.getElementById('fnae-src').innerHTML, true)">
+
+                    <!-- BOXEL REBOUND -->
+                    <template id="boxel-rebound-src">
+                        <!DOCTYPE html><html lang="en"><head><base href="https://cdn.jsdelivr.net/gh/Trinculo54/Boxel-rebound-hope@master/Newer/"><meta charset="utf-8"/><meta name="format-detection" content="telephone=no"/><meta name="msapplication-tap-highlight" content="no"/><meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' name='viewport'/><title>Boxel Rebound</title><link href="css/materia-icons.css" rel="stylesheet" crossorigin="anonymous"><link rel="stylesheet" type="text/css" href="css/stylesheet.css" crossorigin="anonymous"><link rel="icon" type="image/png" href="img/icons/icon.png"><style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background-color:#000000;}</style></head><body oncontextmenu="return false;"><div class="app" id="app"><div id="content"><canvas id="gameCanvas" width="360" height="640"></canvas></div></div><form id="id-options" class="options" style="display:none;"><div class="banner"><img src="img/banner.png"/><p class="title">Boxel<br>Rebound</p><p class="subtitle"><img class="google-icon" src="img/icons/google-icon.svg"/>Welcome!</p></div><span id="version"></span><div class="wrapper"><input id="id-audio" type="checkbox" class="switch-input"><label for="id-audio" class="switch-label">Audio</label><input id="id-fullscreen" type="checkbox" class="switch-input"><label for="id-fullscreen" class="switch-label">Fullscreen</label><input id="id-fastmode" type="checkbox" class="switch-input"><label for="id-fastmode" class="switch-label">Fast Mode</label><div class="buttons"><button id="id-browse" type="button" class="md-btn" autofocus><i class="material-icons">language</i></button><button id="id-play" type="button" class="md-btn" autofocus>play</button></div><div class="social"><span id="id-social"><i class="material-icons">favorite</i> Write a review</span></div></div></form><div id="browser" class="browser" style="display:none;"></div><script src="js/lz-string.min.js" crossorigin="anonymous"></script><script src="js/preloadjs-NEXT.min.js" crossorigin="anonymous"></script><script src="js/soundjs-NEXT.min.js" crossorigin="anonymous"></script><script src="js/easeljs-NEXT.min.js" crossorigin="anonymous"></script><script src="js/tweenjs-NEXT.min.js" crossorigin="anonymous"></script><script src="js/jquery-3.3.1.min.js" crossorigin="anonymous"></script><script>window.chrome=window.chrome||{};window.chrome.extension=window.chrome.extension||{};window.chrome.extension.ViewType=window.chrome.extension.ViewType||{POPUP:'popup',TAB:'tab'};window.chrome.runtime=window.chrome.runtime||{};window.chrome.runtime.getManifest=window.chrome.runtime.getManifest||function(){return{version:"1.0.0",name:"Boxel Rebound"};};window.chrome.storage=window.chrome.storage||{};const mockStorage={get:function(keys,callback){if(callback)callback({});},set:function(items,callback){if(callback)callback();},remove:function(keys,callback){if(callback)callback();},clear:function(callback){if(callback)callback();}};window.chrome.storage.sync=window.chrome.storage.sync||mockStorage;window.chrome.storage.local=window.chrome.storage.local||mockStorage;window.chrome.storage.onChanged=window.chrome.storage.onChanged||{addListener:function(){},removeListener:function(){}};</script><script type="text/javascript" src="js/AssetManager.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Theme.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Home.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Interface.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/DialogWindow.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Timer.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/LevelMap.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/LevelEditor.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/StorageManager.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Tiles.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Player.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Gravity.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Particles.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Button.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/LunchBox.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Game.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/FileSaver.min.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/buy.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/Extension.js" crossorigin="anonymous"></script><script type="text/javascript" src="js/hack.js" crossorigin="anonymous"></script><script>const bypassInterval=setInterval(()=>{const playButton=document.getElementById('id-play');const optionsMenu=document.getElementById('id-options');if(playButton&&optionsMenu&&optionsMenu.style.display!=='none'){playButton.click();clearInterval(bypassInterval);}},100);</script></body></html>
+                    </template>
+                    <input type="button" data-new="true" value="Boxel Rebound" onclick="launchCloaked(document.getElementById('boxel-rebound-src').innerHTML, true)">
+                </div>
+
+                <!-- NEWLY ADDED FILES SECTION -->
+                <div id="newly-added-section" class="mt-8 bg-[#0f0f0f]/90 backdrop-blur-md border theme-border-dark rounded p-6 shadow-2xl mb-8 hidden">
+                    <h2 class="theme-text text-xl font-bold mb-4 pb-2 border-b border-dashed theme-border-dark uppercase">NEWLY_ADDED_FILES //</h2>
+                    <div id="new-games-container"></div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div id="sections-container" class="mt-8">
+                    <div id="loading-overlay" class="py-20 text-center text-gray-600 animate-pulse">INITIALIZING_DATABASE_FETCH...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         CANVAS / BACKGROUND LOGIC
+         ============================================================ -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        // Cache the theme color string so we don't call getComputedStyle every frame
+        let cachedFillStyle = 'rgba(74, 222, 128, 0.3)';
+        let cachedStrokeBase = '74, 222, 128'; // used for dynamic alpha lines
+
+        function updateThemeColor() {
+            const rgb = getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim() || '74, 222, 128';
+            cachedFillStyle   = `rgba(${rgb}, 0.3)`;
+            cachedStrokeBase  = rgb;
+        }
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x  = Math.random() * width;
+                this.y  = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.size = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width)  this.vx *= -1;
+                if (this.y < 0 || this.y > height)  this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = cachedFillStyle;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+        }
+
+        let mouse = { x: null, y: null };
+        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+
+        function animate() {
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
+            ctx.fillRect(0, 0, width, height);
+
+            for (const p of particles) {
+                p.update();
+                p.draw();
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = mouse.x - p.x, dy = mouse.y - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 180) {
+                        ctx.strokeStyle = `rgba(${cachedStrokeBase}, ${0.2 * (1 - dist / 180)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        initParticles();
+        animate();
+    </script>
+
+    <!-- ============================================================
+         CORE APP LOGIC
+         ============================================================ -->
+    <script>
+        // ── Cached DOM refs ──────────────────────────────────────────
+        const $ = id => document.getElementById(id); // terse alias
+
+        const DOM = {
+            container:        $('sections-container'),
+            favSection:       $('favorites-section'),
+            favContainer:     $('favorites-container'),
+            newSection:       $('newly-added-section'),
+            newContainer:     $('new-games-container'),
+            searchInput:      $('search-input'),
+            customSource:     $('custom-games-source'),
+        };
+
+        // ── Settings / Persistence ───────────────────────────────────
+        let settings  = JSON.parse(localStorage.getItem('ugs_settings'))   || { startupAnim: false, panicBtn: false, panicUrl: 'https://nebo.instructure.com/', theme: 'green' };
+        let favorites = JSON.parse(localStorage.getItem('ugs_favorites'))   || [];
+        let allGamesData = {};
+
+        // Apply saved settings to DOM
+        document.documentElement.setAttribute('data-theme', settings.theme);
+        updateThemeColor();
+        $('set-startup').checked   = settings.startupAnim;
+        $('set-panic').checked     = settings.panicBtn;
+        $('set-panic-url').value   = settings.panicUrl || 'https://nebo.instructure.com/';
+        $('set-theme').value       = settings.theme    || 'green';
+
+        // ── Unified Modal Toggle ─────────────────────────────────────
+        // Replaces the 5+ near-identical individual toggle functions.
+        function toggleModal(id) {
+            const el = $(id);
+            if (!el) return;
+            el.style.display = (el.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // ── Admin / Auth ─────────────────────────────────────────────
+        function toggleAdmin() {
+            const adminModal = $('admin-modal');
+            if (adminModal.style.display === 'flex') {
+                toggleModal('admin-modal');
+            } else {
+                $('auth-passcode').value = '';
+                $('auth-error').innerText = '';
+                toggleModal('auth-modal');
+                setTimeout(() => $('auth-passcode').focus(), 100);
+            }
+        }
+
+        function submitAuth() {
+            if ($('auth-passcode').value === 'mack') {
+                toggleModal('auth-modal');
+                toggleModal('admin-modal');
+            } else {
+                $('auth-error').innerText = 'ACCESS_DENIED: INVALID_PASSCODE';
+                $('auth-passcode').value = '';
+            }
+        }
+
+        // ── Confirm Dialog ───────────────────────────────────────────
+        let confirmAction = null;
+        function closeConfirm(proceed) {
+            toggleModal('confirm-modal');
+            if (proceed && confirmAction) confirmAction();
+            confirmAction = null;
+        }
+
+        // ── Settings Save ────────────────────────────────────────────
+        function saveSettings() {
+            settings.startupAnim = $('set-startup').checked;
+            settings.panicBtn    = $('set-panic').checked;
+            const url            = $('set-panic-url').value.trim();
+            settings.panicUrl    = url || 'https://nebo.instructure.com/';
+            settings.theme       = $('set-theme').value;
+
+            localStorage.setItem('ugs_settings', JSON.stringify(settings));
+            document.documentElement.setAttribute('data-theme', settings.theme);
+            updateThemeColor();
+            toggleModal('settings-modal');
+        }
+
+        window.addEventListener('keydown', e => {
+            if (settings.panicBtn && (e.key === 'Escape' || e.key === '`' || e.key === '~')) {
+                window.location.href = settings.panicUrl;
+            }
+        });
+
+        // ── Startup Animation ────────────────────────────────────────
+        async function runStartup() {
+            if (!settings.startupAnim) return;
+            const screen = $('startup-screen');
+            const textContainer = $('startup-text');
+            screen.style.display = 'flex';
+            for (const line of ['> INITIALIZING UGS CORE...', '> BYPASSING FIREWALL...', '> ACCESS GRANTED.']) {
+                const p = document.createElement('p');
+                p.className = 'mb-2';
+                textContainer.appendChild(p);
+                for (const char of line) {
+                    p.innerHTML += char;
+                    await new Promise(r => setTimeout(r, 25));
+                }
+                await new Promise(r => setTimeout(r, 200));
+            }
+            await new Promise(r => setTimeout(r, 400));
+            screen.style.opacity = '0';
+            setTimeout(() => { screen.style.display = 'none'; }, 500);
+        }
+
+        // ── Game Button Helpers ──────────────────────────────────────
+
+        // Shared XSS-safe text sanitizer
+        function sanitizeText(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function cleanButton(btn) {
+            if (!btn?.value) return;
+            let text = btn.value.replace(/^cl\s*/i, '');
+            text = text
+                .replace(/(\d+)([a-zA-Z]+)/g, '$1 $2')
+                .replace(/([a-zA-Z]+)(\d+)/g, '$1 $2')
+                .replace(/([a-z])([A-Z])/g, '$1 $2');
+            btn.value = text.split(/\s+/).map(word => {
+                if (!word.length || (word === word.toUpperCase() && word.length > 1)) return word;
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            }).join(' ').trim();
+        }
+
+        // Single factory — replaces duplicated wrapper creation in wrapGameButton + renderFavorites
+        function createGameWrapper(name, onclickAttr, onclickFn) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'game-wrapper';
+
+            const btn = document.createElement('input');
+            btn.type = 'button';
+            btn.value = name;
+            btn.dataset.wrapped = 'true';
+            if (onclickAttr) btn.setAttribute('onclick', onclickAttr);
+            else if (onclickFn) btn.onclick = onclickFn;
+
+            const star = document.createElement('button');
+            star.className = 'fav-star' + (favorites.includes(name) ? ' active' : '');
+            star.innerHTML = '★';
+            star.onclick = e => { e.preventDefault(); toggleFavorite(name); };
+
+            wrapper.appendChild(btn);
+            wrapper.appendChild(star);
+            return wrapper;
+        }
+
+        function wrapGameButton(btn) {
+            if (btn.dataset.wrapped) return;
+            btn.dataset.wrapped = 'true';
+
+            const action = btn.getAttribute('onclick') || btn.onclick;
+            if (!allGamesData[btn.value]) allGamesData[btn.value] = { value: btn.value, onclick: action };
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'game-wrapper';
+            if (btn.parentNode) btn.parentNode.insertBefore(wrapper, btn);
+            wrapper.appendChild(btn);
+
+            const star = document.createElement('button');
+            star.className = 'fav-star' + (favorites.includes(btn.value) ? ' active' : '');
+            star.innerHTML = '★';
+            star.onclick = e => { e.preventDefault(); toggleFavorite(btn.value); };
+            wrapper.appendChild(star);
+        }
+
+        function toggleFavorite(name) {
+            if (favorites.includes(name)) {
+                favorites = favorites.filter(f => f !== name);
+            } else {
+                favorites.push(name);
+            }
+            localStorage.setItem('ugs_favorites', JSON.stringify(favorites));
+            renderFavorites();
+
+            // Sync all star buttons for this game
+            document.querySelectorAll(`.game-wrapper`).forEach(w => {
+                const btn = w.querySelector('input[type="button"]');
+                if (btn && btn.value === name) {
+                    const star = w.querySelector('.fav-star');
+                    if (star) star.classList.toggle('active', favorites.includes(name));
+                }
+            });
+        }
+
+        function renderFavorites() {
+            DOM.favContainer.innerHTML = '';
+            if (!favorites.length) { DOM.favSection.classList.add('hidden'); return; }
+            DOM.favSection.classList.remove('hidden');
+
+            [...favorites].sort((a, b) => a.localeCompare(b)).forEach(fav => {
+                const data = allGamesData[fav];
+                if (!data) return;
+                const wrapper = createGameWrapper(
+                    data.value,
+                    typeof data.onclick === 'string' ? data.onclick : null,
+                    typeof data.onclick === 'function' ? data.onclick : null
+                );
+                DOM.favContainer.appendChild(wrapper);
+            });
+        }
+
+        // ── Game Launcher ────────────────────────────────────────────
+        // Shared cloaking setup — deduplicates the title/favicon logic
+        function applyCloaking(win) {
+            win.document.title = 'Google Drive';
+            const link = win.document.createElement('link');
+            link.rel = 'icon';
+            link.href = 'https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico';
+            if (win.document.head) win.document.head.appendChild(link);
+        }
+
+        function launchCloaked(content, isHtml = false) {
+            const win = window.open('about:blank', '_blank');
+            if (!win) { console.error('Popup blocked! Allow popups to launch games.'); return; }
+
+            if (isHtml) {
+                win.document.open();
+                win.document.write(content);
+                win.document.close();
+                applyCloaking(win);
+            } else {
+                applyCloaking(win);
+                win.document.body.style.cssText = 'margin:0;padding:0;overflow:hidden;background-color:#000;';
+                const iframe = win.document.createElement('iframe');
+                iframe.src = content;
+                iframe.style.cssText = 'width:100vw;height:100vh;border:none;margin:0;padding:0;';
+                win.document.body.appendChild(iframe);
+            }
+        }
+
+        // ── Sort Helpers ─────────────────────────────────────────────
+        function sortWrappersInside(parent) {
+            const wrappers = [...parent.querySelectorAll('.game-wrapper')];
+            wrappers.sort((a, b) => a.querySelector('input').value.localeCompare(b.querySelector('input').value));
+            wrappers.forEach(w => parent.appendChild(w));
+        }
+
+        // ── Custom Games Integration ─────────────────────────────────
+        function integrateCustomGames() {
+            const source = DOM.customSource;
+            if (!source || source.dataset.integrated === 'true') return;
+
+            const customButtons = [...source.querySelectorAll('input[type="button"]')];
+            if (!customButtons.length) return;
+
+            const existingSections = [...DOM.container.querySelectorAll('.letter-section')];
+            const usesSections     = existingSections.length > 0;
+
+            customButtons.forEach(btn => {
+                const clone = btn.cloneNode(true);
+                cleanButton(clone);
+                wrapGameButton(clone);
+
+                if (clone.dataset.new === 'true') {
+                    DOM.newContainer.appendChild(clone.parentElement);
+                } else if (usesSections) {
+                    const firstLetter = clone.value.charAt(0).toUpperCase();
+                    let section = existingSections.find(s => s.querySelector('.letter-header')?.innerText.trim().toUpperCase() === firstLetter);
+                    if (!section) {
+                        section = document.createElement('div');
+                        section.className = 'letter-section';
+                        section.innerHTML = `<div class="letter-header">${firstLetter}</div>`;
+                        existingSections.push(section);
+                        DOM.container.appendChild(section);
+                        existingSections.sort((a, b) => a.querySelector('.letter-header').innerText.localeCompare(b.querySelector('.letter-header').innerText));
+                        existingSections.forEach(s => DOM.container.appendChild(s));
+                    }
+                    section.appendChild(clone.parentElement);
+                    sortWrappersInside(section);
+                } else {
+                    DOM.container.appendChild(clone.parentElement);
+                }
+            });
+
+            if (!usesSections) sortWrappersInside(DOM.container);
+
+            if (DOM.newContainer.children.length > 0) {
+                DOM.newSection.classList.remove('hidden');
+                sortWrappersInside(DOM.newContainer);
+            }
+
+            source.dataset.integrated = 'true';
+            renderFavorites();
+        }
+
+        // ── Random Game ──────────────────────────────────────────────
+        function playRandomGame() {
+            const allButtons = [...document.querySelectorAll('input[type="button"]')]
+                .filter(btn => !btn.closest('#custom-games-source'));
+            if (!allButtons.length) {
+                const status = Object.assign(document.createElement('div'), {
+                    className: 'text-red-500 text-[10px] mt-2',
+                    innerText: 'ERROR: DATABASE_NOT_LOADED'
+                });
+                $('random-game').parentElement.appendChild(status);
+                setTimeout(() => status.remove(), 2000);
+                return;
+            }
+            const randomBtn = allButtons[Math.floor(Math.random() * allButtons.length)];
+            randomBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            randomBtn.classList.add('theme-bg');
+            setTimeout(() => { randomBtn.click(); randomBtn.classList.remove('theme-bg'); }, 500);
+        }
+
+        // ── Search / Filter ──────────────────────────────────────────
+        // Debounced to avoid layout thrash on every keystroke
+        let filterTimer;
+        function filterGames() {
+            clearTimeout(filterTimer);
+            filterTimer = setTimeout(_doFilter, 80);
+        }
+
+        function _doFilter() {
+            const query = DOM.searchInput.value.toLowerCase();
+            document.querySelectorAll('.game-wrapper').forEach(wrapper => {
+                const btn = wrapper.querySelector('input[type="button"]');
+                wrapper.style.display = (btn && btn.value.toLowerCase().includes(query)) ? '' : 'none';
+            });
+            document.querySelectorAll('.letter-section, #newly-added-section').forEach(section => {
+                if (section.id === 'newly-added-section' && !section.querySelectorAll('.game-wrapper').length) {
+                    section.style.display = 'none'; return;
+                }
+                const hasVisible = [...section.querySelectorAll('.game-wrapper')].some(w => w.style.display !== 'none');
+                section.style.display = hasVisible ? 'block' : 'none';
+            });
+        }
+
+        // ── Mutation Observer ────────────────────────────────────────
+        let integrationTimer;
+        const observer = new MutationObserver(mutations => {
+            let needsIntegration = false;
+            for (const mutation of mutations) {
+                for (const node of mutation.addedNodes) {
+                    if (node.nodeType !== 1) continue;
+                    const loader = $('loading-overlay');
+                    if (loader) loader.remove();
+                    const buttons = node.tagName === 'INPUT' && node.type === 'button'
+                        ? [node] : [...node.querySelectorAll('input[type="button"]')];
+                    if (buttons.length) {
+                        buttons.forEach(btn => { cleanButton(btn); wrapGameButton(btn); });
+                        needsIntegration = true;
+                    }
+                }
+            }
+            if (needsIntegration) {
+                clearTimeout(integrationTimer);
+                integrationTimer = setTimeout(() => { integrateCustomGames(); renderFavorites(); }, 500);
+            }
+        });
+        observer.observe(DOM.container, { childList: true, subtree: true });
+
+        // ── Database Loader ──────────────────────────────────────────
+        function loadDatabase() {
+            if (DOM.customSource) DOM.customSource.dataset.integrated = 'false';
+            DOM.newContainer.innerHTML = '';
+
+            const old = $('ugs-data-script');
+            if (old) old.remove();
+
+            const script = document.createElement('script');
+            script.id = 'ugs-data-script';
+            script.src = 'https://cdn.jsdelivr.net/gh/bubbls/ugs-singlefile@main/games.js';
+            document.body.appendChild(script);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            runStartup();
+            loadDatabase();
+        });
+    </script>
+</body>
+</html>
+
+    <div id="root"></div>
+
+    <canvas id="cv-bg"></canvas>
+<canvas id="cv-mid"></canvas>
+<canvas id="cv-fg"></canvas>
+
+<div id="start">
+  <div class="si">
+    <div class="si-kanji">洞窟</div>
+    <div class="si-title">Echo of Aria</div>
+    <div class="si-hr"></div>
+    <p class="si-sub">
+      Move the mouse to play the piano<br>
+      Click to resonate the strings<br>
+      Let the echo carry you away
+    </p>
+    <button class="si-btn" id="btn-enter">Enter · 入</button>
+  </div>
+</div>
+
+<div id="chord-pads">
+  <button class="pad" data-idx="0"><span class="pad-key" data-qw="A" data-az="Q">Q</span><span class="pad-k">静</span><span class="pad-n">Am</span></button>
+  <button class="pad" data-idx="1"><span class="pad-key" data-qw="S" data-az="S">S</span><span class="pad-k">夢</span><span class="pad-n">Em</span></button>
+  <button class="pad" data-idx="2"><span class="pad-key" data-qw="D" data-az="D">D</span><span class="pad-k">花</span><span class="pad-n">Fmaj7</span></button>
+  <button class="pad" data-idx="3"><span class="pad-key" data-qw="F" data-az="F">F</span><span class="pad-k">雪</span><span class="pad-n">Cmaj</span></button>
+  <button class="pad" data-idx="4"><span class="pad-key" data-qw="G" data-az="G">G</span><span class="pad-k">月</span><span class="pad-n">Dm</span></button>
+  <button class="pad" data-idx="5"><span class="pad-key" data-qw="H" data-az="H">H</span><span class="pad-k">風</span><span class="pad-n">G</span></button>
+</div>
+
+<div id="cursor"></div>
+<div id="nlabel"></div>
+    <canvas id="webgl_canvas"></canvas>
+<div id="hud">
+  <div id="hud_pct">000%</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="prog_fill"></div>
+  </div>
+  <div class="scene-label" id="scene_name">DAWN</div>
+</div>
+<button id="theme_toggle" aria-label="Toggle light/dark mode">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+  </svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+  </svg>
+</button>
+<div id="scene_strip">
+  <div class="scene-dot active"></div>
+  <div class="scene-dot"></div>
+  <div class="scene-dot"></div>
+  <div class="scene-dot"></div>
+  <div class="scene-dot"></div>
+</div>
+<div id="scroll_container">
+  <section id="s0">
+    <div class="text-card">
+      <div class="tag">A small reflection</div>
+      <h1>THE<br>ENDLESS<br>HORIZON</h1>
+      <p class="body-text">
+        A small build during a quiet pause. Scroll and watch the sea move
+        through a full day. Light changes, waves repeat, and the horizon
+        keeps returning.
+      </p>
+      <a class="cta" href="#s1">
+        Continue
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M1 6h10M6 1l5 5-5 5" />
+        </svg>
+      </a>
+    </div>
+  </section>
+  <section id="s1">
+    <div class="text-card right">
+      <div class="h-line"></div>
+      <div class="tag">01 — Midday</div>
+      <h2>OPEN<br>WATER</h2>
+      <p class="body-text">
+        Reconnecting with simplicity. Small pieces of motion, repeating
+        quietly. For a moment the rhythm feels calm, almost balanced.
+      </p>
+      <div class="stat-row" style="justify-content: flex-end">
+        <div class="stat">
+          <span class="stat-num">360°</span>
+          <span class="stat-label">Horizon</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Phases</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Motion</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="s2">
+    <div class="text-card">
+      <div class="h-line"></div>
+      <div class="tag">02 — Sunset</div>
+      <h2>SHIFTING<br>LIGHT</h2>
+      <p class="body-text">
+        Still, the calm carries a question. Is this something honest being
+        rebuilt, or just a way of avoiding what comes next?
+      </p>
+      <a class="cta" href="#s3">
+        Continue
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M1 6h10M6 1l5 5-5 5" />
+        </svg>
+      </a>
+    </div>
+  </section>
+  <section id="s3">
+    <div class="text-card center">
+      <div class="h-line"></div>
+      <div class="tag">03 — Midnight</div>
+      <h2>QUIET<br>SEA</h2>
+      <p class="body-text">
+        Simplicity can restore focus, but it can also soften the edge.
+        Stay there too long and comfort begins to blur into confusion.
+      </p>
+    </div>
+  </section>
+  <section id="s4">
+    <div class="text-card right">
+      <div class="h-line"></div>
+      <div class="tag">04 — Storm</div>
+      <h2>THE<br>QUESTION</h2>
+      <p class="body-text">
+        The waves keep cycling. For now that is enough. But beneath the calm
+        the question remains, waiting for whatever comes next.
+      </p>
+      <a class="cta" href="#s0">
+        Begin again
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M1 6h10M6 1l5 5-5 5" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</div>
+<div id="credit">
+  <a href="https://www.lessrain.com" target="_blank" rel="noopener">
+    LESS RAIN GMBH
+  </a>
+</div>
+
+    <body>
+
+  <div class="widget">
+    <div class="hdr">
+      <div class="hdr__left">
+        <div class="token-icon" id="tokenIcon"></div>
+        <div>
+          <div class="hdr__sym" id="tokenSym">BTC</div>
+          <div class="hdr__name" id="tokenName">Bitcoin <span class="live-dot"></span>Live</div>
+        </div>
+      </div>
+      <div class="hdr__right">
+        <div class="price" id="priceEl">$71,842</div>
+        <div class="delta up" id="deltaEl">▲ +2.84%</div>
+      </div>
+    </div>
+
+    <div class="token-tabs" id="tokenTabs"></div>
+    <div class="tf-row" id="tfRow"></div>
+
+    <div class="chart-wrap" id="chartWrap">
+      <svg id="chartSvg" viewBox="0 0 680 200" preserveAspectRatio="none"></svg>
+      <div class="crosshair-line" id="crosshairLine"></div>
+      <div class="crosshair-dot" id="crosshairDot"></div>
+      <div class="tooltip" id="tooltip">
+        <div class="tooltip__price" id="ttPrice"></div>
+        <div class="tooltip__time" id="ttTime"></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div>
+        <div class="stat__label">24h High</div>
+        <div class="stat__val up" id="statHigh">—</div>
+      </div>
+      <div>
+        <div class="stat__label">24h Low</div>
+        <div class="stat__val down" id="statLow">—</div>
+      </div>
+      <div>
+        <div class="stat__label">Volume</div>
+        <div class="stat__val" id="statVol">—</div>
+      </div>
+      <div>
+        <div class="stat__label">Mkt Cap</div>
+        <div class="stat__val" id="statMcap">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-footer">
+    <span class="profile-footer__label">Built by</span>
+    <a class="profile-btn profile-btn--codepen" href="https://codepen.io/Margarita-the-solid" target="_blank" rel="noopener">
+      <span class="profile-btn__icon">
+        <!-- CodePen logo SVG -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 8.182l-.018-.087-.017-.05c-.01-.024-.018-.05-.03-.075l-.012-.025-.026-.05-.026-.04-.046-.06-.034-.04-.063-.062-.053-.045-.042-.03-.055-.03-.045-.02-.07-.015-.046-.008-.065-.005H.718l-.065.005-.046.008-.07.015-.045.02-.056.03-.04.03-.054.045-.063.062-.034.04-.046.06-.026.04-.026.05-.012.025c-.012.025-.02.05-.03.075l-.017.05-.018.087v7.635l.018.088.017.05c.01.025.018.05.03.075l.012.025.026.05.026.04.046.06.034.04.063.063.053.045.042.03.055.03.045.02.07.015.046.008.065.005h22.564l.065-.005.046-.008.07-.015.044-.02.056-.03.042-.03.053-.045.063-.063.034-.04.046-.06.026-.04.026-.05.012-.025c.012-.025.02-.05.03-.075l.017-.05.018-.088V8.182zM12 15.47L7.46 12 12 8.53l4.54 3.47L12 15.47zm-5.1-3.47L3.62 9.88V14.1L6.9 12zm1.42-1.085L12 8.03l3.682 2.855L12 13.97l-3.68-2.855zM17.1 12l3.28 2.1V9.88L17.1 12zm-5.1 4.53L7.46 13.06l-3.62 2.327 8.16 5.245 8.16-5.245-3.62-2.327L12 16.53zM3.62 8.882l3.62 2.327L12 8.03 16.76 11.21l3.62-2.327L12 3.225 3.62 8.882z" />
+        </svg>
+      </span>
+      Follow on CodePen
+    </a>
+    <a class="profile-btn profile-btn--github" href="https://github.com/isitrita" target="_blank" rel="noopener">
+      <span class="profile-btn__icon">
+        <!-- GitHub logo SVG -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+        </svg>
+      </span>
+      GitHub
+    </a>
+  </div>
+</body>
+
+
+    <!-- Put all your JS files here --> <script src="js/1.js"></script> const TOKENS = {
+  BTC: {
+    name: "Bitcoin",
+    icon: "₿",
+    bg: "linear-gradient(135deg,#f7931a,#ffc246)",
+    price: 71842,
+    change: 2.84,
+    vol: "$38.2B",
+    mcap: "$1.41T",
+    seed: 42
+  },
+  ETH: {
+    name: "Ethereum",
+    icon: "Ξ",
+    bg: "#627eea",
+    price: 2321,
+    change: 1.12,
+    vol: "$14.7B",
+    mcap: "$279B",
+    seed: 17
+  },
+  SOL: {
+    name: "Solana",
+    icon: "◎",
+    bg: "#9945ff",
+    price: 183.44,
+    change: -0.77,
+    vol: "$3.8B",
+    mcap: "$84.7B",
+    seed: 73
+  },
+  BNB: {
+    name: "BNB",
+    icon: "⬡",
+    bg: "#f0b90b",
+    price: 416.2,
+    change: 0.54,
+    vol: "$1.2B",
+    mcap: "$62B",
+    seed: 28
+  }
+};
+const TFS = ["1H", "4H", "1D", "1W", "1M"];
+
+let activeTok = "BTC";
+let activeTf = "1D";
+let livePoints = {};
+let animFrame;
+
+/* generate seeded pseudorandom price path */
+function seededRng(seed) {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+function genPath(tok, tf) {
+  const t = TOKENS[tok];
+  const rng = seededRng(t.seed + TFS.indexOf(tf) * 100);
+  const n = 80;
+  const pts = [];
+  let v = t.price * (1 - 0.04 - rng() * 0.04);
+  const drift = t.change / 100 / n;
+  for (let i = 0; i < n; i++) {
+    v += v * drift + v * (rng() - 0.5) * 0.018;
+    pts.push(v);
+  }
+  pts.push(t.price); // end at real price
+  return pts;
+}
+
+function ptsToSvg(pts, W, H, pad = 12) {
+  const mn = Math.min(...pts),
+    mx = Math.max(...pts);
+  const range = mx - mn || 1;
+  return pts.map((p, i) => {
+    const x = (i / (pts.length - 1)) * W;
+    const y = pad + (1 - (p - mn) / range) * (H - pad * 2);
+    return [x, y];
+  });
+}
+
+function drawChart(tok, tf) {
+  const wrap = document.getElementById("chartWrap");
+  const W = wrap.offsetWidth || 680,
+    H = 200;
+  const svg = document.getElementById("chartSvg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+  const pts = genPath(tok, tf);
+  livePoints[tok + tf] = pts;
+  const coords = ptsToSvg(pts, W, H);
+  const t = TOKENS[tok];
+  const isUp = t.change >= 0;
+  const color = isUp ? "#caff00" : "#ff2d78";
+  const gradId = "cg" + tok + tf;
+
+  const d = coords
+    .map((c, i) => (i === 0 ? `M${c[0]},${c[1]}` : `L${c[0]},${c[1]}`))
+    .join(" ");
+  const last = coords[coords.length - 1];
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.22"/>
+        <stop offset="75%" stop-color="${color}" stop-opacity="0.04"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <!-- grid -->
+    ${[0.25, 0.5, 0.75]
+      .map(
+        (y) =>
+          `<line x1="0" y1="${y * H}" x2="${W}" y2="${
+            y * H
+          }" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>`
+      )
+      .join("")}
+    <!-- fill -->
+    <path d="${d} L${last[0]},${H} L0,${H} Z" fill="url(#${gradId})"/>
+    <!-- line -->
+    <path d="${d}" fill="none" stroke="${color}" stroke-width="2" opacity="0.9" filter="url(#glow)"/>
+    <!-- live dot -->
+    <circle cx="${last[0]}" cy="${
+    last[1]
+  }" r="4" fill="${color}" opacity="0.95"/>
+    <circle cx="${last[0]}" cy="${
+    last[1]
+  }" r="9" fill="none" stroke="${color}" stroke-width="1" opacity="0.3">
+      <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  `;
+
+  /* update stored coords for hover */
+  svg._coords = coords;
+  svg._pts = pts;
+}
+
+/* hover interactions */
+const wrap = document.getElementById("chartWrap");
+wrap.addEventListener("mousemove", function (e) {
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const W = rect.width;
+  const svg = document.getElementById("chartSvg");
+  if (!svg._coords) return;
+  const coords = svg._coords,
+    pts = svg._pts;
+  const idx = Math.min(
+    Math.round((x / W) * (coords.length - 1)),
+    coords.length - 1
+  );
+  const [cx, cy] = coords[idx];
+  const yPx = (cy / 200) * rect.height;
+
+  document.getElementById(
+    "crosshairLine"
+  ).style.cssText = `left:${x}px;opacity:1`;
+  document.getElementById("crosshairDot").style.cssText = `left:${
+    (cx / svg.viewBox.baseVal.width) * rect.width
+  }px;top:${yPx}px;opacity:1`;
+
+  const tt = document.getElementById("tooltip");
+  const tok = TOKENS[activeTok];
+  document.getElementById("ttPrice").textContent =
+    "$" +
+    pts[idx].toLocaleString("en", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  const hoursAgo = Math.round(
+    (coords.length - 1 - idx) *
+      (activeTf === "1H"
+        ? 1 / 60
+        : activeTf === "4H"
+        ? 4 / 60
+        : activeTf === "1D"
+        ? 24 / coords.length
+        : activeTf === "1W"
+        ? 168 / coords.length
+        : 720 / coords.length)
+  );
+  document.getElementById("ttTime").textContent =
+    hoursAgo === 0 ? "Now" : hoursAgo + "h ago";
+
+  const ttX = Math.min(x + 14, rect.width - 130);
+  tt.style.cssText = `left:${ttX}px;top:${Math.max(yPx - 30, 0)}px;opacity:1`;
+});
+wrap.addEventListener("mouseleave", () => {
+  document.getElementById("crosshairLine").style.opacity = "0";
+  document.getElementById("crosshairDot").style.opacity = "0";
+  document.getElementById("tooltip").style.opacity = "0";
+});
+
+/* token tabs */
+function buildTokenTabs() {
+  const el = document.getElementById("tokenTabs");
+  el.innerHTML = Object.entries(TOKENS)
+    .map(
+      ([k, t]) => `
+    <div class="tok-tab ${k === activeTok ? "active" : ""}" data-tok="${k}">
+      <div class="tok-tab__icon" style="background:${
+        t.bg.includes("gradient") ? t.bg : t.bg
+      };color:#fff;">${t.icon}</div>
+      ${k}
+    </div>
+  `
+    )
+    .join("");
+  el.querySelectorAll(".tok-tab").forEach((tab) => {
+    tab.addEventListener("click", function () {
+      activeTok = this.dataset.tok;
+      updateAll();
+    });
+  });
+}
+
+/* timeframe tabs */
+function buildTfTabs() {
+  const el = document.getElementById("tfRow");
+  el.innerHTML = TFS.map(
+    (tf) =>
+      `<button class="tf ${
+        tf === activeTf ? "active" : ""
+      }" data-tf="${tf}">${tf}</button>`
+  ).join("");
+  el.querySelectorAll(".tf").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      activeTf = this.dataset.tf;
+      updateAll();
+    });
+  });
+}
+
+function updateHeader() {
+  const t = TOKENS[activeTok];
+  const isUp = t.change >= 0;
+  document.getElementById("tokenIcon").textContent = t.icon;
+  document.getElementById("tokenIcon").style.background = t.bg;
+  document.getElementById("tokenIcon").style.color = "#fff";
+  document.getElementById("tokenSym").textContent = activeTok;
+  document.getElementById("tokenName").innerHTML =
+    t.name + ' <span class="live-dot"></span>Live';
+  document.getElementById("priceEl").textContent =
+    "$" + t.price.toLocaleString("en", { minimumFractionDigits: 2 });
+  document.getElementById("priceEl").style.color = isUp ? "#caff00" : "#ff2d78";
+  document.getElementById("deltaEl").textContent =
+    (isUp ? "▲ +" : "▼ ") + Math.abs(t.change).toFixed(2) + "%";
+  document.getElementById("deltaEl").className =
+    "delta " + (isUp ? "up" : "down");
+
+  const pts = genPath(activeTok, activeTf);
+  const mn = Math.min(...pts),
+    mx = Math.max(...pts);
+  document.getElementById("statHigh").textContent =
+    "$" + mx.toLocaleString("en", { maximumFractionDigits: 2 });
+  document.getElementById("statLow").textContent =
+    "$" + mn.toLocaleString("en", { maximumFractionDigits: 2 });
+  document.getElementById("statVol").textContent = t.vol;
+  document.getElementById("statMcap").textContent = t.mcap;
+}
+
+function updateAll() {
+  buildTokenTabs();
+  buildTfTabs();
+  updateHeader();
+  drawChart(activeTok, activeTf);
+}
+
+/* live price tick */
+setInterval(() => {
+  const t = TOKENS[activeTok];
+  const drift = (Math.random() - 0.49) * t.price * 0.0008;
+  t.price = Math.max(t.price + drift, 1);
+  updateHeader();
+
+  // extend chart path
+  const svg = document.getElementById("chartSvg");
+  if (svg._pts) {
+    const newPt = t.price;
+    const pts = [...svg._pts.slice(1), newPt];
+    const W = wrap.offsetWidth || 680;
+    const coords = ptsToSvg(pts, W, 200);
+    svg._coords = coords;
+    svg._pts = pts;
+    drawChart(activeTok, activeTf);
+  }
+}, 2000);
+
+updateAll();
+window.addEventListener("resize", () => drawChart(activeTok, activeTf));
+
+    <script src="js/1.js"></script>/* ════════════════════════════════════════════════════
+   ÉCHO D'ARIA  ·  C418 Minecraft Ambient
+   ════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  width:100%;height:100%;
+  background:#000408;
+  overflow:hidden;
+  cursor:none;
+  font-family:'Georgia','Times New Roman',serif;
+}
+canvas{position:fixed;inset:0;width:100%;height:100%}
+#cv-bg {z-index:1}
+#cv-mid{z-index:2}
+#cv-fg {z-index:3}
+
+/* ── Start screen ──────────────────────────────────── */
+#start{
+  position:fixed;inset:0;z-index:10;
+  background:rgba(0,3,12,0.92);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 1.0s ease;
+}
+#start.hide{opacity:0;pointer-events:none}
+.si{text-align:center;color:#e8dfc8;max-width:560px;padding:20px}
+.si-kanji{
+  font-size:clamp(64px,12vw,120px);
+  line-height:1;letter-spacing:.35em;
+  color:#f0e8cc;opacity:.18;margin-bottom:2px;
+}
+.si-title{
+  font-size:clamp(18px,3.2vw,32px);font-weight:300;
+  letter-spacing:.32em;text-transform:uppercase;
+  color:#f0e8cc;margin:10px 0 5px;
+}
+.si-hr{width:70px;height:1px;background:rgba(240,232,200,.32);margin:12px auto}
+.si-sub{
+  font-size:clamp(10px,1.5vw,13px);letter-spacing:.16em;
+  opacity:.45;line-height:1.9;color:#ccc8b8;margin-bottom:32px;
+}
+.si-btn{
+  background:transparent;
+  border:1px solid rgba(240,232,200,.38);
+  color:#e8dfc8;
+  font-family:inherit;font-size:clamp(10px,1.4vw,13px);
+  letter-spacing:.30em;text-transform:uppercase;
+  padding:13px 38px;cursor:none;
+  transition:all .35s;
+}
+.si-btn:hover{background:rgba(240,232,200,.07);border-color:rgba(240,232,200,.68);color:#fff}
+
+/* ── Custom cursor ─────────────────────────────────── */
+#cursor{
+  position:fixed;left:0;top:0;width:20px;height:20px;
+  border:1px solid rgba(240,232,200,.55);border-radius:50%;
+  transform:translate(var(--cx,-999px),var(--cy,-999px)) translate(-50%,-50%);
+  will-change:transform;
+  pointer-events:none;z-index:100;
+  transition:border-color .2s;
+}
+#cursor::after{
+  content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:3px;height:3px;
+  background:rgba(240,232,200,.80);border-radius:50%;
+}
+#cursor.pressing{transform:translate(var(--cx,-999px),var(--cy,-999px)) translate(-50%,-50%) scale(.62);border-color:rgba(240,232,200,.9)}
+#cursor.ready   {border-color:rgba(180,230,200,.80)}
+
+/* ── Note label ────────────────────────────────────── */
+#nlabel{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  color:rgba(240,232,200,0);font-size:10px;
+  letter-spacing:.40em;text-transform:uppercase;
+  z-index:20;pointer-events:none;
+  transition:color .12s,opacity .5s;
+}
+#nlabel.show{color:rgba(240,232,200,.50)}
+
+/* ── Chord pads (bottom keyboard) ──────────────────── */
+#chord-pads{
+  position:fixed;
+  bottom:42px;left:50%;transform:translateX(-50%);
+  display:flex;gap:14px;
+  padding:18px 22px;
+  background:rgba(0,6,16,.38);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(240,232,200,.12);
+  border-radius:2px;
+  z-index:15;
+  opacity:0;pointer-events:none;
+  transition:opacity 1.4s ease 0.4s,transform 1.4s ease 0.4s;
+  transform:translateX(-50%) translateY(20px);
+}
+#chord-pads.show{
+  opacity:1;pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.pad{
+  position:relative;
+  width:72px;height:78px;
+  background:rgba(8,14,32,.42);
+  border:1px solid rgba(240,232,200,.22);
+  color:#e8dfc8;
+  cursor:none;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  user-select:none;overflow:hidden;
+  transition:transform .25s ease,background .35s,border-color .35s,box-shadow .35s;
+}
+.pad::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 60%,rgba(255,230,180,0),rgba(255,230,180,0) 70%);
+  transition:background .5s ease;
+  pointer-events:none;
+}
+.pad:hover{
+  background:rgba(18,26,50,.55);
+  border-color:rgba(240,232,200,.48);
+}
+.pad:hover::before{
+  background:radial-gradient(circle at 50% 60%,rgba(255,230,180,.12),rgba(255,230,180,0) 70%);
+}
+.pad.active{
+  background:rgba(255,240,200,.18);
+  border-color:rgba(255,240,200,.72);
+  transform:scale(.94);
+  box-shadow:0 0 24px rgba(255,230,180,.35),inset 0 0 12px rgba(255,230,180,.20);
+}
+.pad-k{
+  font-size:30px;line-height:1;font-weight:300;
+  margin-bottom:6px;color:#f0e8cc;opacity:.92;
+}
+.pad-n{
+  font-size:8px;letter-spacing:.22em;
+  text-transform:uppercase;opacity:.42;
+  font-weight:300;
+}
+.pad-key{
+  position:absolute;top:5px;right:6px;
+  font-size:8px;opacity:.30;
+  font-family:monospace;
+}
+    <script src="js/2.js"></script>@use "sass:math";
+
+* {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--white: hsl(0 0% 100%);
+	--gray50: hsl(223 10% 95%);
+	--gray100: hsl(223 10% 90%);
+	--gray150: hsl(223 10% 85%);
+	--gray200: hsl(223 10% 80%);
+	--gray300: hsl(223 10% 70%);
+	--gray400: hsl(223 10% 60%);
+	--gray500: hsl(223 10% 50%);
+	--gray600: hsl(223 10% 40%);
+	--gray700: hsl(223 10% 30%);
+	--gray800: hsl(223 10% 20%);
+	--gray900: hsl(223 10% 10%);
+	--gray950: hsl(223 10% 5%);
+	--blue100: hsl(217 90% 90%);
+	--blue200: hsl(217 90% 80%);
+	--blue300: hsl(217 90% 70%);
+	--blue400: hsl(217 90% 60%);
+	--blue500: hsl(217 90% 50%);
+	--blue600: hsl(217 90% 40%);
+	--blue600-02: hsl(217 90% 40% / 0.2);
+	--blue700: hsl(217 90% 30%);
+	--blue800: hsl(217 90% 20%);
+	--purple350: hsl(252 90% 65%);
+	--purple350-02: hsl(252 90% 65% / 0.2);
+	--magenta300: hsl(292 90% 70%);
+	--magenta400: hsl(292 90% 60%);
+	--black: hsl(0 0% 0%);
+	--trans-dur: 0.3s;
+	color-scheme: light dark;
+	font-size: clamp(0.875rem, 0.8409rem + 0.1705vw, 1.25rem);
+}
+
+body,
+button,
+input,
+textarea {
+	color: light-dark(var(--blue800), var(--blue100));
+	font: 1em / 1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	transition:
+		background-color var(--trans-dur),
+		box-shadow var(--trans-dur),
+		color var(--trans-dur),
+		opacity var(--trans-dur);
+}
+
+body {
+	background-color: light-dark(var(--gray100), var(--gray900));
+	display: grid;
+	overflow-x: hidden;
+	place-items: center;
+	height: 100vh;
+}
+
+ul {
+	margin-inline-start: 1.5em;
+}
+
+.chatbot {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	min-height: 100vh;
+
+	&__container {
+		width: 100%;
+		max-width: 52em;
+	}
+
+	&__welcome {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin: auto;
+		padding: 4.5em 1.5em;
+		max-width: 33em;
+	}
+
+	&__icon {
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 4em;
+		height: 4em;
+
+		&--gradient {
+			background:
+				linear-gradient(135deg,
+					var(--magenta400) 25%,
+					var(--blue400) 60%,
+					var(--blue800));
+			box-shadow: 0 0.75em 2em hsl(0 0% 0% / 0.3);
+			position: relative;
+
+			&::before {
+				background:
+					linear-gradient(hsl(0 0% 100% / 0.5),
+						hsl(0 0% 0% / 0.2),
+						hsl(0 0% 0% / 0) 50%);
+				border-radius: 50%;
+				content: "";
+				display: block;
+				position: absolute;
+				inset: 10%;
+			}
+		}
+
+		&-svg {
+			color: var(--white);
+			display: block;
+			width: 50%;
+			height: 50%;
+		}
+
+		&--small {
+			width: 2.25em;
+			height: 2.25em;
+		}
+
+		&-wrapper {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 0.75em;
+		}
+	}
+
+	&__title {
+		font-size: 1.125em;
+		font-weight: 500;
+		line-height: 1.333;
+		text-align: center;
+		margin-bottom: 3.5rem;
+	}
+
+	&__suggestion {
+		background-color: transparent;
+		border-radius: 0.75em;
+		color: light-dark(var(--gray700), var(--gray300));
+		cursor: pointer;
+		padding: 0.5em 0.75em;
+		position: relative;
+		text-align: start;
+		z-index: 0;
+
+		&:before {
+			background:
+				linear-gradient(90deg,
+					var(--blue300),
+					var(--blue500) 33%,
+					var(--magenta300));
+			border-radius: inherit;
+			box-shadow:
+				0 0.375em 0.5em hsl(0 0% 100% / 0.2) inset,
+				0 -0.25em 0.25em hsl(0 0% 0% / 0.1) inset;
+			content: "";
+			display: block;
+			position: absolute;
+			inset: 0;
+			opacity: 0;
+			transition: opacity var(--trans-dur);
+			z-index: -1;
+		}
+
+		&:hover,
+		&:focus-visible {
+			box-shadow: 0 0.75em 1em var(--blue600-02);
+			color: var(--gray50);
+			outline: none;
+
+			&:before {
+				opacity: 1;
+			}
+		}
+
+		&-tag {
+			background-color: light-dark(var(--gray150), var(--gray700));
+			border-radius: 0.375em;
+			color: light-dark(var(--gray700), var(--gray150));
+			cursor: pointer;
+			padding: 0 0.5em;
+
+			&:disabled {
+				cursor: not-allowed;
+				opacity: 0.5;
+			}
+
+			&:not(:disabled):hover,
+			&:focus-visible {
+				background-color: light-dark(var(--gray900), var(--gray50));
+				color: light-dark(var(--gray50), var(--gray900));
+				outline: none;
+			}
+		}
+
+		&-tags {
+			display: flex;
+			gap: 0.5em;
+			flex-wrap: wrap;
+			margin-bottom: 0.75em;
+		}
+	}
+
+	&__suggestions-box {
+		background-color: light-dark(var(--gray50), var(--gray800));
+		border-radius: 1.5em;
+		box-shadow: 0 4.5em 4.5em hsl(0 0% 0% / 0.2);
+		display: flex;
+		flex-direction: column;
+		gap: 0.75em;
+		padding: 0.75em;
+		width: 100%;
+		transition: background-color var(--trans-dur);
+	}
+
+	&__input {
+		background-color: light-dark(var(--white), var(--gray700));
+		border-radius: 1em;
+		box-shadow:
+			0 0 0 1px light-dark(var(--gray100), var(--gray800)) inset,
+			0 0.125em 0.125em hsl(0 0% 0% / 0.3);
+		padding: 1em 0;
+		padding-inline: 1em 3.5em;
+		width: 100%;
+		outline: none;
+
+		&::placeholder {
+			color: light-dark(var(--gray500), var(--gray400));
+		}
+
+		&-wrapper {
+			position: relative;
+			width: 100%;
+		}
+	}
+
+	&__label {
+		overflow: hidden;
+		position: absolute;
+		width: 1px;
+		height: 1px;
+	}
+
+	&__submit {
+		background-color: light-dark(var(--black), var(--gray100));
+		border-radius: 50%;
+		box-shadow:
+			0 0 0 0.125em light-dark(var(--black), var(--gray100)) inset,
+			0 0.375em 0.25em hsl(0 0% 100% / 0.4) inset,
+			0 1em 1.5em hsl(0 0% 0% / 0.2);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		inset-inline-end: 0.5em;
+		transform: translateY(-50%);
+		width: 2.25em;
+		height: 2.25em;
+
+		&:disabled {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+
+		&:not(:disabled):hover {
+			background-color: light-dark(var(--gray900), var(--white));
+			box-shadow:
+				0 0 0 0.125em light-dark(var(--gray900), var(--white)) inset,
+				0 0.375em 0.25em hsl(0 0% 100% / 0.4) inset,
+				0 1em 1.5em hsl(0 0% 0% / 0.2);
+		}
+
+		&--textarea {
+			bottom: 0.5em;
+			top: auto;
+			transform: none;
+		}
+
+		&-icon {
+			color: light-dark(var(--gray50), var(--gray950));
+			width: 1.25em;
+			height: 1.25em;
+			transition: color var(--trans-dur);
+
+			[dir="rtl"] & {
+				transform: scaleX(-1);
+			}
+		}
+	}
+
+	&__conversation {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+	}
+
+	&__loader {
+		margin: 0.375em 0;
+		width: 1.5em;
+		height: 1.5em;
+
+		&-line {
+			$lineDuration: 1s;
+			$lines: 8;
+
+			animation: loader-line $lineDuration linear infinite;
+
+			@for $l from 1 through $lines {
+				&:nth-child(#{$l}) {
+					animation-delay: $lineDuration * (-$l / $lines);
+				}
+			}
+		}
+	}
+
+	&__message {
+		display: flex;
+		flex-shrink: 0;
+		gap: 0.75em;
+		margin: 1.25em 0;
+		min-height: 3.5em;
+
+		&:last-child {
+			margin-bottom: 2.5em;
+		}
+
+		&--user {
+			align-self: flex-end;
+			flex-direction: row-reverse;
+		}
+
+		&--ai {
+			align-self: flex-start;
+
+			&-loading {
+				animation: icon-appear calc(var(--trans-dur) * 2) ease-out;
+			}
+		}
+
+		&-icon {
+			flex-shrink: 0;
+		}
+
+		&-bubble {
+			background-color: var(--purple350);
+			border-radius: 50%;
+			position: absolute;
+			bottom: 0.25em;
+			inset-inline-end: -0.125em;
+			width: 1.25em;
+			height: 1.25em;
+
+			[dir="rtl"] & {
+				background-color: var(--blue500);
+			}
+
+			&--end {
+				inset-inline-end: -0.5em;
+				bottom: 0;
+				width: 0.5em;
+				height: 0.5em;
+			}
+		}
+
+		&-content {
+			animation: message-appear var(--trans-dur) cubic-bezier(0.65, 0, 0.35, 1);
+			border-radius: 1.75em;
+			padding: 1em 1.25em;
+			padding-inline-end: 1.5em;
+			position: relative;
+			min-width: 3.5em;
+			transition:
+				background-color var(--trans-dur),
+				box-shadow var(--trans-dur);
+		}
+
+		&-text + &-text {
+			margin-top: 1.5em;
+		}
+
+		&--user &-content {
+			background:
+				linear-gradient(135deg,
+					var(--blue500),
+					var(--purple350) calc(100% - 1.25em));
+			box-shadow:
+				0 0.375em 0.5em hsl(0 0% 100% / 0.2) inset,
+				0 -0.25em 0.25em hsl(0 0% 0% / 0.1) inset,
+				0 1.5em 1.5em var(--purple350-02);
+			color: var(--white);
+			text-shadow: 0 0 0.25em hsl(0 0% 0% / 0.3);
+			transform-origin: calc(100% + 0.75em) 100%;
+
+			[dir="rtl"] & {
+				background:
+					linear-gradient(135deg,
+						var(--blue500) 1.25em,
+						var(--purple350));
+				transform-origin: -0.75em 100%;
+			}
+		}
+
+		&--ai &-content {
+			background-color: light-dark(var(--gray50), var(--gray800));
+			box-shadow: 0 1.5em 1.5em hsl(0 0% 0% / 0.1);
+			transform-origin: 0 0;
+
+			[dir="rtl"] & {
+				transform-origin: 100% 0;
+			}
+		}
+
+		&--ai &-text {
+			animation: text-appear calc(var(--trans-dur) * 2) linear forwards;
+			opacity: 0;
+		}
+
+		&-scroller {
+			flex: 1;
+			overflow: hidden auto;
+			scrollbar-gutter: stable;
+		}
+	}
+
+	&__messages {
+		display: flex;
+		flex-direction: column;
+		padding: 0 1.5em;
+	}
+
+	&__input-box {
+		background-color: light-dark(var(--gray50), var(--gray800));
+		border-radius: 1.5em;
+		box-shadow: 0 4.5em 4.5em hsl(0 0% 0% / 0.2);
+		margin: 0 auto 1.5em;
+		padding: 0.75em;
+		position: relative;
+		width: calc(100% - 3em);
+		transition: background-color var(--trans-dur);
+
+		&::before {
+			background-color: light-dark(var(--gray100), var(--gray900));
+			mask-image: linear-gradient(hsl(0 0% 0% / 0), hsl(0 0% 0%));
+			content: "";
+			display: block;
+			position: absolute;
+			inset: auto 0 100% 0;
+			inset-inline: -1.5em -0.625em;
+			height: 1.5em;
+			transition: background-color var(--trans-dur);
+		}
+	}
+
+	&__textarea {
+		background-color: light-dark(var(--white), var(--gray700));
+		border-radius: 1em;
+		box-shadow:
+			0 0 0 1px light-dark(var(--gray100), var(--gray800)) inset,
+			0 0.125em 0.125em hsl(0 0% 0% / 0.3);
+		display: block;
+		padding: 1em 1em 3.25em;
+		outline: none;
+		resize: none;
+		min-height: 9em;
+		width: 100%;
+
+		&::placeholder {
+			color: light-dark(var(--gray500), var(--gray400));
+		}
+
+		&-wrapper {
+			position: relative;
+		}
+	}
+
+	&__globe {
+		&-button {
+			background: transparent;
+			color: light-dark(var(--gray500), var(--gray300));
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			bottom: 1em;
+			inset-inline-start: 1em;
+			width: 1.5em;
+			height: 1.5em;
+
+			&:hover {
+				color: light-dark(var(--gray900), var(--gray100));
+			}
+		}
+
+		&-icon {
+			width: 1em;
+			height: 1em;
+		}
+	}
+}
+
+// Animations
+@keyframes icon-appear {
+
+	from,
+	50% {
+		opacity: 0;
+		transform: translateY(33%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(1);
+	}
+}
+
+@keyframes loader-line {
+
+	from,
+	67%,
+	to {
+		opacity: 0.2;
+	}
+
+	33% {
+		opacity: 1;
+	}
+}
+
+@keyframes message-appear {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes text-appear {
+
+	from,
+	50% {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
 
 </body>
 </html>
